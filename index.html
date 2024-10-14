@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flip Photos</title>
     <style>
+        :root {
+            --container-width: 90vw;  /* 90% of the viewport width */
+            --container-max-width: 500px; /* Maximum width for large screens */
+            --container-height: 90vh; /* 90% of the viewport height */
+        }
+
         body {
             display: flex;
             justify-content: center;
@@ -16,15 +22,16 @@
 
         .flip-container {
             perspective: 1000px;
-            width: 90vw; /* Set width to 90% of the viewport */
-            max-width: 500px; /* Maximum width for larger screens */
+            width: var(--container-width);
+            height: var(--container-height);
+            max-width: var(--container-max-width);
+            max-height: var(--container-max-width); /* Keep it square */
         }
 
         .flipper {
             position: relative;
-            width: 100%;  /* Ensures it scales to the container's width */
-            height: 0;
-            padding-top: 100%; /* Maintain 1:1 aspect ratio (square) */
+            width: 100%;
+            height: 100%;
             transition: transform 0.6s;
             transform-style: preserve-3d;
             cursor: pointer;
@@ -39,21 +46,25 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
+            background-size: contain; /* Ensure the whole image fits without cropping */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Avoid repeating if the image is smaller */
         }
 
         .front {
-            background: url('first-photo.jpg') no-repeat center/cover;
+            background: url('first-photo.jpg') center/contain no-repeat;
         }
 
         .back {
-            background: url('second-photo.jpg') no-repeat center/cover;
+            background: url('second-photo.jpg') center/contain no-repeat;
             transform: rotateY(180deg);
         }
         
         /* For smaller screens */
         @media (max-width: 600px) {
-            .flip-container {
-                width: 80vw; /* Adjust the size for small screens */
+            :root {
+                --container-width: 80vw; /* Adjust for small screens */
+                --container-height: 80vh;
             }
         }
     </style>
